@@ -1,0 +1,545 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Risk Analytics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Custom Range Slider */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 1.25rem;
+            width: 1.25rem;
+            border-radius: 9999px;
+            background: #ffffff;
+            border: 1px solid #e4e4e7;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            margin-top: -0.5rem;
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 0.25rem;
+            cursor: pointer;
+            background: #f4f4f5;
+            border-radius: 9999px;
+        }
+
+        input[type=range]:focus::-webkit-slider-thumb {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+
+        /* Custom Toggle */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #6366f1;
+        }
+
+        .toggle-checkbox:checked+.toggle-label {
+            background-color: #6366f1;
+        }
+
+        .card-shadow {
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.03), 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+    </style>
+</head>
+
+<body class="bg-zinc-50 text-zinc-900 min-h-screen flex flex-col font-sans antialiased">
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-zinc-200">
+        <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-zinc-900 rounded-lg flex items-center justify-center text-white">
+                    <iconify-icon icon="solar:chart-square-linear" width="20" stroke-width="1.5"></iconify-icon>
+                </div>
+                <span class="font-medium tracking-tight text-lg">EduAnalytica</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="hidden md:flex items-center gap-6 text-sm text-zinc-500 font-medium">
+                    <a href="#" class="hover:text-zinc-900 transition-colors">Dashboard</a>
+                    <a href="#" class="text-zinc-900">Risk Assessment</a>
+                    <a href="/about" class="hover:text-zinc-900 transition-colors">About</a>
+                </div>
+                <button class="flex items-center gap-2 pl-6 border-l border-zinc-200">
+                    <div
+                        class="w-8 h-8 rounded-full bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-500">
+                        <iconify-icon icon="solar:user-circle-linear" width="20"></iconify-icon>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow py-8 px-6">
+        <div class="max-w-6xl mx-auto">
+
+            <header class="mb-8">
+                <h1 class="text-3xl font-medium tracking-tight text-zinc-900">Dropout Risk Prediction</h1>
+                <p class="text-zinc-500 mt-2 text-sm max-w-2xl">
+                    Enter academic and engagement metrics to evaluate student retention probability.This tool uses a
+                    machine learning model to identify at-risk students
+
+                </p>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+                <!-- Left Column: Input Form -->
+                <div class="lg:col-span-7 space-y-6">
+                    <form id="riskForm" class="bg-white rounded-xl card-shadow border border-zinc-100 p-6 sm:p-8">
+                        <div class="flex items-center gap-2 mb-6">
+                            <iconify-icon icon="solar:pen-new-square-linear" class="text-zinc-400"
+                                width="20"></iconify-icon>
+                            <h2 class="text-base font-medium text-zinc-900">Student Metrics</h2>
+                        </div>
+
+                        <!-- Academic Score -->
+                        <div class="mb-8">
+                            <label class="block text-sm font-medium text-zinc-700 mb-2">Average Academic Score
+                                (0-20)</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-2.5 text-zinc-400">
+                                    <iconify-icon icon="solar:diploma-linear" width="18"></iconify-icon>
+                                </span>
+                                <input type="number" id="academicScore" min="0" max="20" placeholder="e.g. 10"
+                                    class="w-full pl-10 pr-4 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-zinc-400"
+                                    required="">
+                            </div>
+                            <p class="text-xs text-zinc-400 mt-1.5">Average across all current modules.</p>
+                            <p id="scoreWarning" class="text-sm text-red-500 mt-2 hidden">
+    ⚠ Average score must be between 0 and 20.
+</p>
+                        </div>
+
+                        <!-- Attendance Slider -->
+                        <div class="mb-8">
+                            <div class="flex justify-between items-center mb-4">
+                                <label class="block text-sm font-medium text-zinc-700">Attendance Percentage</label>
+                                <span id="attendanceValue"
+                                    class="text-sm font-semibold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">0%</span>
+                            </div>
+                            <input type="range" id="attendance" min="0" max="100" value="0"
+                                class="w-full h-2 bg-zinc-100 rounded-lg appearance-none cursor-pointer">
+                            <div class="flex justify-between text-xs text-zinc-400 mt-2">
+                                <span>Critical (&lt;50%)</span>
+                                <span>Excellent (90%+)</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                            <!-- Assignment Gap -->
+                            <div>
+                                <label class="block text-sm font-medium text-zinc-700 mb-2">Submission Gap
+                                    (Days)</label>
+                                <div class="relative">
+                                    <span class="absolute left-3 top-2.5 text-zinc-400">
+                                        <iconify-icon icon="solar:calendar-date-linear" width="18"></iconify-icon>
+                                    </span>
+                                    <input type="number" id="submissionGap" min="0" placeholder="Avg days late"
+                                        class="w-full pl-10 pr-4 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
+                                        required="">
+                                </div>
+                            </div>
+
+                            <!-- Engagement Consistency -->
+                            <div>
+                                <label class="block text-sm font-medium text-zinc-700 mb-2">Engagement Level</label>
+                                <div class="relative">
+                                    <span class="absolute left-3 top-2.5 text-zinc-400">
+                                        <iconify-icon icon="solar:users-group-rounded-linear" width="18"></iconify-icon>
+                                    </span>
+                                    <select id="engagement"
+                                        class="w-full pl-10 pr-10 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 cursor-pointer">
+                                        <option value="high">High (Active Participation)</option>
+                                        <option value="medium" selected="">Medium (Regular)</option>
+                                        <option value="low">Low (Passive/Silent)</option>
+                                    </select>
+                                    <span class="absolute right-3 top-2.5 text-zinc-400 pointer-events-none">
+                                        <iconify-icon icon="solar:alt-arrow-down-linear" width="16"></iconify-icon>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tuition Fee Status -->
+                        <div
+                            class="flex items-center justify-between p-4 border border-zinc-200 rounded-lg bg-zinc-50/50">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-white border border-zinc-200 flex items-center justify-center text-zinc-500">
+                                    <iconify-icon icon="solar:wallet-linear" width="20"></iconify-icon>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-zinc-900">Tuition Fees Pending</p>
+                                    <p class="text-xs text-zinc-500">Is the student behind on payments?</p>
+                                </div>
+                            </div>
+
+                            <label for="tuitionToggle" class="flex items-center cursor-pointer relative">
+                                <input type="checkbox" id="tuitionToggle" class="sr-only peer">
+
+                                <!-- Track -->
+                                <div class="w-11 h-6 bg-zinc-200 rounded-full border border-zinc-200
+               peer-checked:bg-indigo-600 peer-checked:border-indigo-600
+               transition-all">
+                                </div>
+
+                                <!-- Knob -->
+                                <div class="absolute left-0.5 top-0.5 bg-white w-5 h-5 rounded-full shadow-sm
+               transition-all peer-checked:translate-x-full">
+                                </div>
+                            </label>
+
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Right Column: Results -->
+                <div class="lg:col-span-5 sticky top-24">
+                    <div
+                        class="bg-white rounded-xl card-shadow border border-zinc-100 p-6 sm:p-8 h-full flex flex-col justify-between">
+
+                        <div>
+                            <div class="flex items-center justify-between mb-6">
+                                <h2 class="text-base font-medium text-zinc-900">Prediction Analysis</h2>
+                                <iconify-icon icon="solar:info-circle-linear" class="text-zinc-400 cursor-help"
+                                    width="20" title="Based on weighted factors"></iconify-icon>
+                            </div>
+
+                            <!-- Score Display -->
+                            <div class="flex flex-col items-center justify-center py-8">
+                                <div class="relative w-48 h-48">
+                                    <!-- Background Circle -->
+                                    <svg class="w-full h-full transform -rotate-90">
+                                        <circle cx="96" cy="96" r="88" fill="none" stroke="#f4f4f5" stroke-width="12">
+                                        </circle>
+                                        <!-- Progress Circle -->
+                                        <circle id="riskCircle" cx="96" cy="96" r="88" fill="none" stroke="#6366f1"
+                                            stroke-width="12" stroke-dasharray="552" stroke-dashoffset="552"
+                                            stroke-linecap="round" class="transition-all duration-1000 ease-out">
+                                        </circle>
+                                    </svg>
+                                    <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                        <span
+                                            class="text-xs font-medium uppercase tracking-widest text-zinc-400 mb-1">Dropout
+                                            Risk</span>
+                                        <span id="riskScoreDisplay"
+                                            class="text-5xl font-medium tracking-tight text-zinc-900">0%</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Classification Badge -->
+                            <div class="flex justify-center mb-8">
+                                <div id="riskBadge"
+                                    class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium bg-zinc-100 text-zinc-600 transition-colors duration-300">
+                                    <span class="w-2 h-2 rounded-full bg-current"></span>
+                                    <span id="riskLabel">Pending Data</span>
+                                </div>
+                            </div>
+
+                            <!-- Key Factors -->
+                            <div class="space-y-3 opacity-0 transition-opacity duration-500" id="resultsContent">
+                                <p class="text-sm font-medium text-zinc-900 mb-3">Primary Risk Factors:</p>
+                                <ul id="factorsList" class="space-y-2">
+                                    <!-- Dynamic content -->
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 pt-6 border-t border-zinc-100">
+                            <button onclick="resetForm()"
+                                class="w-full py-2.5 px-4 bg-white border border-zinc-200 text-zinc-600 text-sm font-medium rounded-lg hover:bg-zinc-50 hover:text-zinc-900 transition-colors focus:outline-none focus:ring-2 focus:ring-zinc-200">
+                                Reset Analysis
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+<!-- Disclaimer Modal -->
+<div id="disclaimerModal"
+     class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+
+    <div class="bg-white max-w-md w-full p-6 rounded-xl shadow-xl text-center">
+
+        <h2 class="text-lg font-semibold mb-3">
+            Terms & Disclaimer
+        </h2>
+
+        <p class="text-sm text-zinc-600 leading-relaxed mb-5">
+            This dropout prediction system is trained using a <strong>Portuguese</strong>  higher
+            education dataset. It provides probabilistic risk estimates and is
+            intended for research and early-warning purposes only.
+            It should not be used as a final academic decision tool.
+        </p>
+
+        <button id="agreeButton"
+                class="w-full bg-indigo-600 text-white py-2 rounded-lg
+                       hover:bg-indigo-700 transition">
+            I agree to terms & disclaimer
+        </button>
+
+    </div>
+</div>
+
+   <script>
+/* ===============================
+   DOM REFERENCES
+================================ */
+const attendanceInput = document.getElementById("attendance");
+const academicInput = document.getElementById("academicScore");
+const gapInput = document.getElementById("submissionGap");
+const engagementInput = document.getElementById("engagement");
+const tuitionInput = document.getElementById("tuitionToggle");
+
+const attendanceVal = document.getElementById("attendanceValue");
+const riskScoreDisplay = document.getElementById("riskScoreDisplay");
+const riskBadge = document.getElementById("riskBadge");
+const riskLabel = document.getElementById("riskLabel");
+const riskCircle = document.getElementById("riskCircle");
+
+const factorsList = document.getElementById("factorsList");
+const resultsContent = document.getElementById("resultsContent");
+
+const disclaimerModal = document.getElementById("disclaimerModal");
+const agreeButton = document.getElementById("agreeButton");
+
+/* ===============================
+   CIRCLE SETUP
+================================ */
+const radius = 88;
+const circumference = 2 * Math.PI * radius;
+riskCircle.style.strokeDasharray = circumference;
+
+
+
+/* ===============================
+   INITIAL UI
+================================ */
+function initializeUI() {
+    attendanceVal.innerText = "0%";
+    riskScoreDisplay.innerText = "0%";
+    riskCircle.style.strokeDashoffset = circumference;
+    riskCircle.style.stroke = "#e5e7eb";
+
+    riskBadge.className =
+        "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium bg-zinc-100 text-zinc-600";
+    riskLabel.innerText = "Pending Data";
+
+    resultsContent.style.opacity = "0";
+    factorsList.innerHTML = "";
+}
+
+/* ===============================
+   VALIDATION
+================================ */
+function validateInputs(attendance, score, gap) {
+
+    if (attendance < 0 || attendance > 100) {
+        showToast("Attendance must be between 0 and 100%", "error");
+        return false;
+    }
+
+    if (score < 0 || score > 20) {
+        showToast("Average score must be between 0 and 20", "error");
+        return false;
+    }
+
+    if (gap < 0) {
+        showToast("Submission gap cannot be negative", "error");
+        return false;
+    }
+
+    /* Soft Warnings */
+    if (attendance < 40) {
+        showToast("Very low attendance significantly increases risk", "warning");
+    }
+
+    if (score < 8) {
+        showToast("Critically low academic performance detected", "warning");
+    }
+
+    if (gap > 14) {
+        showToast("Frequent long assignment delays detected", "warning");
+    }
+
+    if (tuitionInput.checked) {
+        showToast("Pending tuition may increase dropout risk", "info");
+    }
+
+    return true;
+}
+
+/* ===============================
+   LOADING
+================================ */
+function setLoadingState() {
+    riskScoreDisplay.innerText = "…";
+    riskLabel.innerText = "Analyzing";
+    riskCircle.style.stroke = "#6366f1";
+}
+
+/* ===============================
+   PREDICTION
+================================ */
+async function calculateRisk() {
+
+    const attendance = parseFloat(attendanceInput.value || 0);
+    const avgScore = parseFloat(academicInput.value || 0);
+    const gap = parseFloat(gapInput.value || 0);
+
+    if (!validateInputs(attendance, avgScore, gap)) return;
+
+    setLoadingState();
+
+    let engagement;
+    if (engagementInput.value === "high") engagement = 2;
+    else if (engagementInput.value === "medium") engagement = 1;
+    else engagement = 0;
+
+    const fees_status = tuitionInput.checked ? 0 : 1;
+
+    const payload = {
+        attendance: attendance,
+        avg_score: avgScore,
+        engagement: engagement,
+        submission_gap: gap,
+        fees_status: fees_status
+    };
+
+    try {
+        const response = await fetch("/predict", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if (!result.error) {
+            updateUI(result.risk, result.label);
+        }
+
+    } catch (err) {
+        showToast("Prediction failed. Check server connection.", "error");
+    }
+}
+
+/* ===============================
+   UPDATE UI
+================================ */
+function updateUI(score, label) {
+
+    riskScoreDisplay.innerText = `${score}%`;
+    const offset = circumference - (score / 100) * circumference;
+    riskCircle.style.strokeDashoffset = offset;
+
+    let strokeColor = "#f43f5e";
+
+    if (label === "Low Risk") strokeColor = "#10b981";
+    else if (label === "Medium Risk") strokeColor = "#f59e0b";
+
+    riskCircle.style.stroke = strokeColor;
+    riskLabel.innerText = label;
+
+    showToast("Prediction updated successfully", "info");
+}
+
+/* ===============================
+   EVENT LISTENERS
+================================ */
+attendanceInput.addEventListener("input", () => {
+    attendanceVal.innerText = `${attendanceInput.value}%`;
+    calculateRisk();
+});
+
+[
+    academicInput,
+    gapInput,
+    engagementInput,
+    tuitionInput
+].forEach(el => {
+    el.addEventListener("change", calculateRisk);
+});
+
+/* ===============================
+   ENTERPRISE DISCLAIMER CONTROL
+================================ */
+
+window.addEventListener("load", () => {
+
+    const navEntries = performance.getEntriesByType("navigation");
+    const navType = navEntries.length ? navEntries[0].type : "navigate";
+
+    /*
+        navType:
+        "navigate"      → direct visit
+        "reload"        → refresh
+        "back_forward"  → back button
+    */
+
+    const seen = sessionStorage.getItem("disclaimerSeen");
+
+    if (navType === "reload") {
+        // Always show on refresh
+        sessionStorage.removeItem("disclaimerSeen");
+        showDisclaimer();
+    }
+    else if (navType === "navigate" && !seen) {
+        // First visit in this tab
+        showDisclaimer();
+    }
+    else if (navType === "back_forward") {
+        // User came from back button → do NOT show
+        hideDisclaimer();
+    }
+    else {
+        hideDisclaimer();
+    }
+
+    initializeUI();
+});
+
+agreeButton.addEventListener("click", () => {
+    sessionStorage.setItem("disclaimerSeen", "true");
+    hideDisclaimer();
+});
+
+/* Helper Functions */
+function showDisclaimer() {
+    disclaimerModal.style.display = "flex";
+    document.body.style.overflow = "hidden";
+}
+
+function hideDisclaimer() {
+    disclaimerModal.style.display = "none";
+    document.body.style.overflow = "auto";
+}
+
+</script>
+</body>
+
+</html>
