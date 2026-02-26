@@ -131,3 +131,35 @@ df["fees_status"] = df["Tuition fees up to date"]
 
 * JavaScript (Vanilla)
 
+## 📁 Project Structure
+
+```
+EduAnalytica/
+│
+├── model/
+│   └── xgboost_web_model.pkl
+│
+├── templates/
+│   ├── index.html
+│   └── about.html
+├── app.py
+├── README.md
+└── requirements.txt
+```
+## 📐System Architecture Diagram
+```
+User Input → Frontend (HTML/JS) → Flask API → XGBoost Model → JSON Response → UI Update
+```
+## 📊 Model Evaluation Table
+```
+----------------------------------------------------------------
+| Model               | Accuracy | Recall | F1 Score | ROC-AUC |
+|---------------------|----------|--------|----------|---------|
+| Logistic Regression | 0.78     | 0.62   | 0.69     | 0.81    |
+| Decision Tree       | 0.75     | 0.60   | 0.66     | 0.74    |
+| Random Forest       | 0.83     | 0.71   | 0.76     | 0.87    |
+| XGBoost (Selected)  | 0.85     | 0.79   | 0.81     | 0.90    |
+----------------------------------------------------------------
+```
+## 📌[Students Dropout Dataset](https://www.kaggle.com/datasets/mahwiz/students-dropout-and-academic-success-dataset)
+
