@@ -29,6 +29,21 @@ This system can help:
 
 ---
 
+## ⬇️Installation
+
+Python Version: 3.10.0
+
+Setup Instructions:
+
+1. Clone the repository
+
+2. Create virtual environment: ``` python -m venv venv ```
+
+3. Activate virtual environment:``` venv\Scripts\activate ```
+
+4. Install dependencies:``` pip install -r requirements.txt ```
+
+5. Run the application:``` python app.py ```
 ## 🚀 Features
 
 - 📊 Real-time dropout risk prediction
