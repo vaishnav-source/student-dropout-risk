@@ -160,3 +160,8 @@ EduAnalytica/
 ├── app.py
 ├── README.md
 └── requirements.txt
+```
+## 📐System Architecture Diagram
+```
+User Input → Frontend (HTML/JS) → Flask API → XGBoost Model → JSON Response → UI Update
+
