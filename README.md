@@ -179,3 +179,4 @@ User Input → Frontend (HTML/JS) → Flask API → XGBoost Model → JSON Respo
 ```
 
 
+## 📌[Students Dropout Dataset](https://www.kaggle.com/datasets/mahwiz/students-dropout-and-academic-success-dataset)
