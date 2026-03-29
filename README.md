@@ -164,6 +164,7 @@ EduAnalytica/
 ## 📐System Architecture Diagram
 ```
 User Input → Frontend (HTML/JS) → Flask API → XGBoost Model → JSON Response → UI Update
+
 ```
 ## 📊 Model Evaluation Table
 ```
@@ -176,5 +177,6 @@ User Input → Frontend (HTML/JS) → Flask API → XGBoost Model → JSON Respo
 | XGBoost (Selected)  | 0.85     | 0.79   | 0.81     | 0.90    |
 ----------------------------------------------------------------
 ```
-## 📌[Students Dropout Dataset](https://www.kaggle.com/datasets/mahwiz/students-dropout-and-academic-success-dataset)
 
+
+## 📌[Students Dropout Dataset](https://www.kaggle.com/datasets/mahwiz/students-dropout-and-academic-success-dataset)
